@@ -1,0 +1,8 @@
+{
+  "name": "Interactive Particle Christmas Tree",
+  "description": "A dazzling 3D Christmas tree made of interactive particles that respond to hand gestures using your camera. Open your hand to scatter the tree into a galaxy of glow, and clench your fist to pull it back together.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": []
+}
