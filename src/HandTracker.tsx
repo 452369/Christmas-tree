@@ -99,10 +99,14 @@ const HandTrackerInternal: React.FC<{ onUpdate: (state: HandState) => void }> = 
 
         hands.setOptions({
           maxNumHands: 1,
-          modelComplexity: 1,
+          modelComplexity: 0,
           minDetectionConfidence: 0.5,
           minTrackingConfidence: 0.5,
         });
+
+        let lastIsOpen = true;
+        let stateCounter = 0;
+        const STABLE_FRAMES = 2;
 
         hands.onResults((results: Results) => {
           if (!isActive) return;
@@ -122,15 +126,35 @@ const HandTrackerInternal: React.FC<{ onUpdate: (state: HandState) => void }> = 
             });
             avgDist /= 4;
 
-            const isOpen = avgDist > 0.35; 
+            // Hysteresis for gesture
+            const OPEN_THRESHOLD = 0.35;
+            const CLOSE_THRESHOLD = 0.28;
+            const isCurrentlyOpen = lastIsOpen;
+            
+            const rawIsOpen = isCurrentlyOpen ? (avgDist > CLOSE_THRESHOLD) : (avgDist > OPEN_THRESHOLD);
 
+            if (rawIsOpen !== lastIsOpen) {
+              stateCounter++;
+              if (stateCounter >= STABLE_FRAMES) {
+                lastIsOpen = rawIsOpen;
+                stateCounter = 0;
+              }
+            } else {
+              stateCounter = 0;
+            }
+
+            // Raw position (smoothing is handled in Tree.tsx via useFrame)
             const position = {
               x: (wrist.x - 0.5) * 2,
               y: -(wrist.y - 0.5) * 2,
               z: -wrist.z * 5,
             };
 
-            onUpdate({ isOpen, position, isTracking: true });
+            onUpdate({ 
+              isOpen: lastIsOpen, 
+              position, 
+              isTracking: true 
+            });
           } else {
             onUpdate({ isOpen: true, position: null, isTracking: false });
           }

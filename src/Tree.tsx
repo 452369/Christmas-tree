@@ -45,11 +45,11 @@ const PhotoCard = ({ id, treePos, scatterPos, phase }: any) => {
       
       // Calculate rotation based on hand position
       if (handPose) {
-        const targetRotY = handPose.x * Math.PI * 0.6;
-        const targetRotX = -handPose.y * Math.PI * 0.6; // Invert Y for intuitive tilt
+        const targetRotY = handPose.x * Math.PI * 0.69;
+        const targetRotX = -handPose.y * Math.PI * 0.69; // Invert Y for intuitive tilt
         
-        persistentRotY.current += (targetRotY - persistentRotY.current) * 0.06;
-        persistentRotX.current += (targetRotX - persistentRotX.current) * 0.06;
+        persistentRotY.current += (targetRotY - persistentRotY.current) * 0.25;
+        persistentRotX.current += (targetRotX - persistentRotX.current) * 0.25;
       }
       
       // Apply rotation to the original scatter position
@@ -323,11 +323,11 @@ export const ChristmasTree = () => {
         
         // Calculate rotation based on hand position
         if (handPose) {
-          const targetRotY = handPose.x * Math.PI * 0.6;
-          const targetRotX = -handPose.y * Math.PI * 0.6; // Invert Y for intuitive tilt
+          const targetRotY = handPose.x * Math.PI * 0.69;
+          const targetRotX = -handPose.y * Math.PI * 0.69; // Invert Y for intuitive tilt
           
-          persistentRotY.current += (targetRotY - persistentRotY.current) * 0.06;
-          persistentRotX.current += (targetRotX - persistentRotX.current) * 0.06;
+          persistentRotY.current += (targetRotY - persistentRotY.current) * 0.25;
+          persistentRotX.current += (targetRotX - persistentRotX.current) * 0.25;
         }
         
         // Apply rotation to the original scatter position
